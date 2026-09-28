@@ -17,6 +17,8 @@ public class RoverSimulatorTest {
 
     private final String testInputsFolder = "src/main/resources/inputTest/";
 
+    private final String parsingErrorMessage = "Error parsing/processing the parameters";
+
     @BeforeEach
     public void setUp() {
         System.setOut(new PrintStream(outputStream));
@@ -54,21 +56,21 @@ public class RoverSimulatorTest {
     public void testBadInputPlateau() {
         var testFilename = "inputIncorrectPlateau.txt";
         Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains("Error parsing the parameters"));
+        assertTrue(outputErrStream.toString().contains(parsingErrorMessage));
     }
 
     @Test
     public void testSetupRoverOutsideNegative() {
         var testFilename = "inputSetupRoverNegative.txt";
         Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains("Error parsing the parameters"));
+        assertTrue(outputErrStream.toString().contains(parsingErrorMessage));
     }
 
     @Test
     public void testSetupRoverOutsideOver() {
         var testFilename = "inputSetupRoverOutsideOver.txt";
         Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains("Error parsing the parameters"));
+        assertTrue(outputErrStream.toString().contains(parsingErrorMessage));
     }
 
     // ------------------------------------------------------
