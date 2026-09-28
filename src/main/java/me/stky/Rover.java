@@ -29,6 +29,11 @@ public class Rover {
         return position;
     }
 
+    /**
+     * Will process each commands, and ignore unrecognized commands
+     *
+     * @param plateau
+     */
     public void processCommands(Plateau plateau) {
         for (int idx = 0; idx < instructions.length(); idx++) {
             char currentCommand = instructions.charAt(idx);

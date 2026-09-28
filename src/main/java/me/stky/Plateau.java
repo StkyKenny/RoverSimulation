@@ -27,7 +27,7 @@ public class Plateau {
 
 
     /**
-     * Check if an object is already present at the coordinate indicated
+     * Check if the newPosition with collide with an already present obstacle at the coordinate indicated
      */
     public boolean hasCollision(Position newPosition) {
         for (Rover obstacle : obstacles) {

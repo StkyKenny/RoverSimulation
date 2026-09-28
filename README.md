@@ -2,6 +2,16 @@
 
  	java -jar rover.jar input.txt
 
+## Program pipeline (simplified)
+
+- Read the file, parse the data, check for invalid data
+- For each rover :
+    - Find new position
+    - Check for collision and out of Plateau
+    - Move
+    - Repeat until all instructions are done
+    - Then display the final position
+
 ## Choices made
 
 - Required 1 parameter which is the path to the input file, additional parameters will be ignored

@@ -5,6 +5,12 @@ import java.util.Objects;
 public record Position(int x, int y) {
 
 
+    /**
+     * Compute the next position and return it
+     *
+     * @param direction
+     * @return
+     */
     public Position moveForward(Direction direction) {
         Objects.requireNonNull(direction, "You can't move position without stating a direction");
 
