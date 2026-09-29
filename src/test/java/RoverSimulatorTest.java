@@ -1,13 +1,15 @@
 import me.stky.Main;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import me.stky.customException.BadInputException;
+import me.stky.customException.OutOfBoundPlateauException;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoverSimulatorTest {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -19,58 +21,44 @@ public class RoverSimulatorTest {
 
     private final String parsingErrorMessage = "Error parsing/processing the parameters";
 
-    @BeforeEach
-    public void setUp() {
-        System.setOut(new PrintStream(outputStream));
-        System.setErr(new PrintStream(outputErrStream));
-    }
-
-    @AfterEach
-    public void restoreSystemOut() {
-        System.setOut(originalOut);
-        System.setErr(originalErr);
-    }
 
     @Test
     public void testNoInputFile() {
-        Main.main(new String[]{});
-
-        String expectedOutput = "Please have the path of the input when launching" + System.lineSeparator();
-        assertEquals(expectedOutput, outputErrStream.toString());
+        assertThrows(IOException.class, () -> Main.parseEnvironnment(Path.of("")));
     }
 
     @Test
     public void testInvalidFilePath() {
-        Main.main(new String[]{"non_existent.txt"});
-        assertTrue(outputErrStream.toString().contains("Error reading the input file"));
+        var testFilename = "non_existent.txt";
+        assertThrows(IOException.class, () -> Main.parseEnvironnment(Path.of(testFilename)));
     }
 
     @Test
     public void testNegativePlateau() {
         var testFilename = "inputNegativePlateau.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains("The Plateau can't have a negative length."));
+        String fullPath = testInputsFolder + testFilename;
+        assertThrows(BadInputException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
     }
 
     @Test
     public void testBadInputPlateau() {
-        var testFilename = "inputIncorrectPlateau.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains(parsingErrorMessage));
+        var testFilename = "inputNaNPlateau.txt";
+        String fullPath = testInputsFolder + testFilename;
+        assertThrows(NumberFormatException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
     }
 
     @Test
     public void testSetupRoverOutsideNegative() {
         var testFilename = "inputSetupRoverNegative.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains(parsingErrorMessage));
+        String fullPath = testInputsFolder + testFilename;
+        assertThrows(OutOfBoundPlateauException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
     }
 
     @Test
     public void testSetupRoverOutsideOver() {
         var testFilename = "inputSetupRoverOutsideOver.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        assertTrue(outputErrStream.toString().contains(parsingErrorMessage));
+        String fullPath = testInputsFolder + testFilename;
+        assertThrows(OutOfBoundPlateauException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
     }
 
     // ------------------------------------------------------
@@ -79,9 +67,9 @@ public class RoverSimulatorTest {
     public void testExample() {
         var testFilename = "input.txt";
         Main.main(new String[]{testInputsFolder + testFilename});
-        String expectedAnswer = "1 3 N" + System.lineSeparator() +
-                "5 1 E" + System.lineSeparator();
-
+        String expectedAnswer =
+                "1 3 N" + System.lineSeparator() +
+                        "5 1 E" + System.lineSeparator();
         assertEquals(expectedAnswer, outputStream.toString());
     }
 
@@ -95,15 +83,37 @@ public class RoverSimulatorTest {
         assertEquals(expectedAnswer, outputStream.toString());
     }
 
-    @Test
-    public void testOutOfBounds() {
-    }
 
     @Test
     public void testIgnoreBadCommands() {
+        var testFilename = "inputWithBadCommands.txt";
+        Main.main(new String[]{testInputsFolder + testFilename});
+        String expectedAnswer =
+                "1 3 N" + System.lineSeparator() +
+                        "5 1 E" + System.lineSeparator();
+        assertEquals(expectedAnswer, outputStream.toString());
+    }
+
+    @Test
+    public void testOutOfBounds() {
+        var testFilename = "inputGoingOutOfBounds.txt";
+        Main.main(new String[]{testInputsFolder + testFilename});
+        String expectedAnswer =
+                "SIGNAL LOST : Rover got out of the Plateau" + System.lineSeparator() +
+                        "1 6 N" + System.lineSeparator() +
+                        "5 1 E" + System.lineSeparator();
+        assertEquals(expectedAnswer, outputStream.toString());
     }
 
     @Test
     public void testCollision() {
+        var testFilename = "inputCollide.txt";
+        Main.main(new String[]{testInputsFolder + testFilename});
+        String expectedAnswer =
+                "COLLISION : Rover couldn't proceed further" + System.lineSeparator() +
+                        "0 3 N" + System.lineSeparator() +
+                        "0 4 E" + System.lineSeparator();
+        assertEquals(expectedAnswer, outputStream.toString());
+
     }
 }

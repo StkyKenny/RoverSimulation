@@ -1,5 +1,6 @@
 package me.stky;
 
+import me.stky.customException.BadInputException;
 import me.stky.entities.Obstacle;
 import me.stky.models.Coordinates;
 
@@ -12,9 +13,9 @@ public class Plateau implements MovementListener {
     private final int height;
     private List<Obstacle> obstacles;
 
-    public Plateau(int width, int height) {
+    public Plateau(int width, int height) throws BadInputException {
         if (width < 0 || height < 0) {
-            throw new IllegalArgumentException("The Plateau can't have a negative length.");
+            throw new BadInputException("The Plateau can't have a negative length.");
         }
         this.width = width;
         this.height = height;
