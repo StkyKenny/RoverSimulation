@@ -6,7 +6,7 @@ public enum Direction {
     SOUTH,
     WEST;
 
-
+    private static final Direction[] directions = Direction.values();
     public static Direction getDirection(String directionName) {
         return switch (directionName.toUpperCase()) {
             case "N" -> Direction.NORTH;
@@ -18,10 +18,10 @@ public enum Direction {
     }
 
     public static Direction rotateClockwise(Direction direction) {
-        return Direction.values()[(direction.ordinal() + 1) % 4];
+        return Direction.values()[(direction.ordinal() + 1) % directions.length];
     }
 
     public static Direction rotateCounterClockwise(Direction direction) {
-        return Direction.values()[(direction.ordinal() + 4 - 1) % 4];
+        return Direction.values()[(direction.ordinal() + directions.length - 1) % directions.length];
     }
 }
