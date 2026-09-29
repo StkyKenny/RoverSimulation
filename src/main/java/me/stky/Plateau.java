@@ -1,7 +1,6 @@
 package me.stky;
 
 import me.stky.entities.Obstacle;
-import me.stky.entities.Rover;
 import me.stky.models.Coordinates;
 
 import java.util.ArrayList;
@@ -24,23 +23,10 @@ public class Plateau implements MovementListener {
 
     /**
      *
-     * @param rover
+     * @param obstacle
      */
-    public void addRover(Rover rover) {
-        this.obstacles.add(rover);
-    }
-
-
-    /**
-     * Check if the newcoordinate with collide with an already present obstacle at the coordinate indicated
-     */
-    public boolean hasCollision(Coordinates newcoordinate) {
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.getCoordinates().equals(newcoordinate)) {
-                return true;
-            }
-        }
-        return false;
+    public void addObstacle(Obstacle obstacle) {
+        this.obstacles.add(obstacle);
     }
 
     public int getWidth() {
