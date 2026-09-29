@@ -95,7 +95,7 @@ public class Main {
 
             new CoordinatesValidatorImpl(plateau).validateCoordinate(rover.getCoordinates());
             rovers.add(rover);
-            plateau.addRover(rover);
+            plateau.addObstacle(rover);
             currentLineIdx += 1;
         }
         return rovers;
