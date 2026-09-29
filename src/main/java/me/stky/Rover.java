@@ -71,7 +71,7 @@ public class Rover {
 
     }
 
-    public void displayLocation() {
-        System.out.println(coordinates.x() + " " + coordinates.y() + " " + direction.name().charAt(0));
+    public Position getCurrentPosition() {
+        return new Position(coordinates,direction);
     }
 }

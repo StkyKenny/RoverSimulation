@@ -68,7 +68,8 @@ public class Main {
         // RUN PHASE
         for (Rover rover : rovers) {
             rover.processCommands(plateau);
-            rover.displayLocation();
+            System.out.println(rover.getCurrentPosition());
+
         }
 
     }
