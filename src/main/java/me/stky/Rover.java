@@ -3,14 +3,14 @@ package me.stky;
 import java.util.Objects;
 
 public class Rover {
-    private Position position;
+    private Coordinates coordinates;
     private Direction direction;
     private String instructions;
 
-    public Rover(Position pos, Direction direction) {
+    public Rover(Coordinates coordinates, Direction direction) {
         Objects.requireNonNull(direction, "The rover requires a valid initial direction");
 
-        this.position = pos;
+        this.coordinates = coordinates;
         this.direction = direction;
         this.instructions = "";
     }
@@ -25,8 +25,8 @@ public class Rover {
         this.direction = direction;
     }
 
-    public Position getPosition() {
-        return position;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
     /**
@@ -46,16 +46,16 @@ public class Rover {
                     updateDirection(Direction.rotateClockwise(this.direction));
                     break;
                 case 'M':
-                    var newPosition = this.position.moveForward(this.direction);
+                    var newCoordinates = this.coordinates.moveForward(this.direction);
 
-                    if (plateau.hasCollision(newPosition)) {
+                    if (plateau.hasCollision(newCoordinates)) {
                         // In case of collision, it is better to stop all commands (and wait for the rectified course of actions)
                         return;
                     }
-                    this.position = newPosition;
+                    this.coordinates = newCoordinates;
 
                     //OUT OF PLATEAU check
-                    if (plateau.checkOutOfBounds(position)) {
+                    if (plateau.checkOutOfBounds(coordinates)) {
                         System.out.println("Rover got out of the Plateau");
                         instructions = "";
                         // You can add additional logics, perhaps a flag to disable the rover or destroy it ?
@@ -72,6 +72,6 @@ public class Rover {
     }
 
     public void displayLocation() {
-        System.out.println(position.x() + " " + position.y() + " " + direction.name().charAt(0));
+        System.out.println(coordinates.x() + " " + coordinates.y() + " " + direction.name().charAt(0));
     }
 }

@@ -31,7 +31,7 @@ public class Main {
 
             // 2 Lines per rover, makes the index incremented twice
             int currentLineIdx = 1;
-            while (currentLineIdx + 1 < lines.size()) {
+            while (currentLineIdx < lines.size()) {
 
                 String[] roverDefinition = lines.get(currentLineIdx).trim().split(" ");
                 if (roverDefinition.length < 3) {
@@ -40,12 +40,17 @@ public class Main {
                 }
                 Direction direction = Direction.getDirection(roverDefinition[2]);
                 Rover rover = new Rover(
-                        new Position(Integer.parseInt(roverDefinition[0]), Integer.parseInt(roverDefinition[1])),
+                        new Coordinates(Integer.parseInt(roverDefinition[0]), Integer.parseInt(roverDefinition[1])),
                         direction
                 );
                 rovers.add(rover);
                 currentLineIdx += 1;
-                rover.setInstructions(lines.get(currentLineIdx).trim());
+                try {
+                    rover.setInstructions(lines.get(currentLineIdx).trim());
+                } catch (IndexOutOfBoundsException ie) {
+                    // Case : last line is missing, proceed as if the instructions are empty
+                    rover.setInstructions("");
+                }
 
                 plateau.addRover(rover);
                 currentLineIdx += 1;

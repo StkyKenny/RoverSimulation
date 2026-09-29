@@ -18,8 +18,13 @@ public class Plateau {
         this.obstacles = new ArrayList<>();
     }
 
-    public void addRover(Rover rover) {
-        if (checkOutOfBounds(rover.getPosition())) {
+    /**
+     *
+     * @param rover
+     * @throws IllegalArgumentException If the rover is placed outside the Plateau
+     */
+    public void addRover(Rover rover) throws IllegalArgumentException {
+        if (checkOutOfBounds(rover.getCoordinates())) {
             throw new IllegalArgumentException("The Rover is outside the Plateau");
         }
         this.obstacles.add(rover);
@@ -27,11 +32,11 @@ public class Plateau {
 
 
     /**
-     * Check if the newPosition with collide with an already present obstacle at the coordinate indicated
+     * Check if the newcoordinate with collide with an already present obstacle at the coordinate indicated
      */
-    public boolean hasCollision(Position newPosition) {
+    public boolean hasCollision(Coordinates newcoordinate) {
         for (Rover obstacle : obstacles) {
-            if (obstacle.getPosition() == newPosition) {
+            if (obstacle.getCoordinates().equals(newcoordinate)) {
                 return true;
             }
         }
@@ -39,14 +44,14 @@ public class Plateau {
     }
 
     /**
-     * Check if the position indicated is outside the Plateau
+     * Check if the coordinate indicated is outside the Plateau
      *
-     * @param position to check
+     * @param coordinates to check
      * @return True if outside the Plateau
      */
-    public boolean checkOutOfBounds(Position position) {
-        return (position.x() < 0 || position.y() < 0 ||
-                position.x() > width || position.y() > height);
+    public boolean checkOutOfBounds(Coordinates coordinates) {
+        return (coordinates.x() < 0 || coordinates.y() < 0 ||
+                coordinates.x() > width || coordinates.y() > height);
     }
 
 }

@@ -1,17 +1,17 @@
 package me.stky.customException;
 
-import me.stky.Position;
+import me.stky.Coordinates;
 
 public class PlateauCollisionException extends Exception {
 
-    private final Position position;
+    private final Coordinates coordinates;
 
-    public PlateauCollisionException(Position position) {
-        this.position = position;
+    public PlateauCollisionException(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     @Override
     public String getMessage() {
-        return "The position at coordinates :[ " + this.position.x() + " " + this.position.y() + " ]";
+        return "The coordinate at coordinates :[ " + this.coordinates.x() + " " + this.coordinates.y() + " ]";
     }
 }
