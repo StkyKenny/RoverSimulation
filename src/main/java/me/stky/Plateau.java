@@ -7,11 +7,11 @@ import me.stky.models.Coordinates;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plateau {
+public class Plateau implements MovementListener {
 
     private final int width;
     private final int height;
-    private final List<Obstacle> obstacles;
+    private List<Obstacle> obstacles;
 
     public Plateau(int width, int height) {
         if (width < 0 || height < 0) {
@@ -53,5 +53,11 @@ public class Plateau {
 
     public List<Obstacle> getObstacles() {
         return obstacles;
+    }
+
+    @Override
+    public void onMove(Obstacle obstacle, Coordinates oldCoords) {
+        obstacles.removeIf(obs -> obs.getCoordinates().equals(oldCoords));
+        obstacles.add(obstacle);
     }
 }

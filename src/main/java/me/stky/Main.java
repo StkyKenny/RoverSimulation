@@ -89,7 +89,8 @@ public class Main {
                     direction,
                     lines.get(currentLineIdx).trim().toUpperCase(),
                     new InstructionsValidatorImpl(),
-                    new CoordinatesValidatorImpl(plateau)
+                    new CoordinatesValidatorImpl(plateau),
+                    List.of(plateau)
             );
 
             new CoordinatesValidatorImpl(plateau).validateCoordinate(rover.getCoordinates());
