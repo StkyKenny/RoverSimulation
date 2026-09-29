@@ -25,12 +25,8 @@ public class Plateau {
     /**
      *
      * @param rover
-     * @throws IllegalArgumentException If the rover is placed outside the Plateau
      */
-    public void addRover(Rover rover) throws IllegalArgumentException {
-        if (checkOutOfBounds(rover.getCoordinates())) {
-            throw new IllegalArgumentException("The Rover is outside the Plateau");
-        }
+    public void addRover(Rover rover) {
         this.obstacles.add(rover);
     }
 
@@ -58,16 +54,4 @@ public class Plateau {
     public List<Obstacle> getObstacles() {
         return obstacles;
     }
-
-    /**
-     * Check if the coordinate indicated is outside the Plateau
-     *
-     * @param coordinates to check
-     * @return True if outside the Plateau
-     */
-    public boolean checkOutOfBounds(Coordinates coordinates) {
-        return (coordinates.x() < 0 || coordinates.y() < 0 ||
-                coordinates.x() > width || coordinates.y() > height);
-    }
-
 }

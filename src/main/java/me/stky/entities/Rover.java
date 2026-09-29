@@ -12,7 +12,7 @@ import me.stky.validator.InstructionsValidator;
 import java.util.List;
 import java.util.Objects;
 
-public class Rover extends Obstacle {
+public class Rover implements Obstacle {
     private final String instructions;
     private final CoordinatesValidator coordinatesValidator;
     private Coordinates coordinates;
@@ -46,5 +46,10 @@ public class Rover extends Obstacle {
 
     public Position getCurrentPosition() {
         return new Position(coordinates, direction);
+    }
+
+    @Override
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 }

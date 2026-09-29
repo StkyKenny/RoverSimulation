@@ -55,7 +55,17 @@ public class Main {
                         new InstructionsValidatorImpl(),
                         new CoordinatesValidatorImpl(plateau)
                 );
+
+                try {
+                    new CoordinatesValidatorImpl(plateau).validateCoordinate(rover.getCoordinates());
+                } catch (OutOfBoundPlateauException e) {
+                    throw new RuntimeException(e);
+                } catch (PlateauCollisionException e) {
+                    throw new RuntimeException(e);
+                }
+
                 rovers.add(rover);
+
 
                 plateau.addRover(rover);
                 currentLineIdx += 1;
@@ -65,10 +75,10 @@ public class Main {
         } catch (IOException e) {
             System.err.println("Error reading the input file : " + e.getMessage());
             return;
-        } catch (Exception e) {
+        }/* catch (Exception e) {
             System.err.println("Error parsing/processing the parameters : " + e.getMessage());
             return;
-        }
+        }*/
 
         // RUN PHASE
         for (Rover rover : rovers) {

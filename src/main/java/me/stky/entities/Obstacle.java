@@ -2,10 +2,7 @@ package me.stky.entities;
 
 import me.stky.models.Coordinates;
 
-public abstract class Obstacle {
-    private Coordinates coordinates;
+public interface Obstacle {
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
+    public abstract Coordinates getCoordinates();
 }
