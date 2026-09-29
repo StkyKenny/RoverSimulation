@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Rover implements Obstacle {
     private final String instructions;
     private final CoordinatesValidator coordinatesValidator;
-    private final List<MovementListener> listeners = new ArrayList<>();
+    private List<MovementListener> listeners = new ArrayList<>();
     private Coordinates coordinates;
     private Direction direction;
     private List<MoveCommand> commands;
@@ -32,6 +32,7 @@ public class Rover implements Obstacle {
         this.instructions = instructions;
         this.commands = instructionsValidator.validateInstructions(instructions);
         this.coordinatesValidator = coordinatesValidator;
+        this.listeners = listeners;
     }
 
     public void processCommands() throws OutOfBoundPlateauException, PlateauCollisionException {
@@ -43,7 +44,7 @@ public class Rover implements Obstacle {
                 // Validate only when entity has moved
                 coordinatesValidator.validateCoordinate(newPosition.coordinates());
                 // Observer notify for Plateau to update where the obstacles are
-                var oldCoordinates = newPosition.coordinates();
+                var oldCoordinates = coordinates;
                 this.coordinates = newPosition.coordinates();
                 for (MovementListener listener : listeners) {
                     listener.onMove(this, oldCoordinates);
