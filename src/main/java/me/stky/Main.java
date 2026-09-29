@@ -2,6 +2,7 @@ package me.stky;
 
 import me.stky.models.Coordinates;
 import me.stky.models.Direction;
+import me.stky.validator.InstructionsValidatorImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,19 +42,15 @@ public class Main {
                     System.err.println("Error not enough parameters for the Rover (3 required)");
                     return;
                 }
+                currentLineIdx += 1;
                 Direction direction = Direction.getDirection(roverDefinition[2]);
                 Rover rover = new Rover(
                         new Coordinates(Integer.parseInt(roverDefinition[0]), Integer.parseInt(roverDefinition[1])),
-                        direction
+                        direction,
+                        lines.get(currentLineIdx).trim().toUpperCase(),
+                        new InstructionsValidatorImpl()
                 );
                 rovers.add(rover);
-                currentLineIdx += 1;
-                try {
-                    rover.setInstructions(lines.get(currentLineIdx).trim());
-                } catch (IndexOutOfBoundsException ie) {
-                    // Case : last line is missing, proceed as if the instructions are empty
-                    rover.setInstructions("");
-                }
 
                 plateau.addRover(rover);
                 currentLineIdx += 1;
@@ -70,7 +67,7 @@ public class Main {
 
         // RUN PHASE
         for (Rover rover : rovers) {
-            rover.processCommands(plateau);
+            rover.processCommands();
             System.out.println(rover.getCurrentPosition());
 
         }

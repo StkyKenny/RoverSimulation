@@ -1,28 +1,27 @@
 package me.stky;
 
+import me.stky.commands.MoveCommand;
 import me.stky.models.Coordinates;
 import me.stky.models.Direction;
 import me.stky.models.Position;
+import me.stky.validator.InstructionsValidatorImpl;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Rover {
     private Coordinates coordinates;
     private Direction direction;
     private String instructions;
+    private List<MoveCommand> commands;
 
-    public Rover(Coordinates coordinates, Direction direction) {
+    public Rover(Coordinates coordinates, Direction direction, String instructions, InstructionsValidatorImpl instructionsValidator) {
         Objects.requireNonNull(direction, "The rover requires a valid initial direction");
 
         this.coordinates = coordinates;
         this.direction = direction;
-        this.instructions = "";
-    }
-
-
-    public void setInstructions(String instructions) {
-        Objects.requireNonNull(instructions, "Instructions can't be null");
         this.instructions = instructions;
+        this.commands = instructionsValidator.validateInstructions(instructions);
     }
 
     public void updateDirection(Direction direction) {
@@ -33,46 +32,12 @@ public class Rover {
         return coordinates;
     }
 
-    /**
-     * Will process each commands, and ignore unrecognized commands
-     *
-     * @param plateau
-     */
-    public void processCommands(Plateau plateau) {
-        for (int idx = 0; idx < instructions.length(); idx++) {
-            char currentCommand = instructions.charAt(idx);
-
-            switch (currentCommand) {
-                case 'L':
-                    updateDirection(Direction.rotateCounterClockwise(this.direction));
-                    break;
-                case 'R':
-                    updateDirection(Direction.rotateClockwise(this.direction));
-                    break;
-                case 'M':
-                    var newCoordinates = this.coordinates.moveForward(this.direction);
-
-                    if (plateau.hasCollision(newCoordinates)) {
-                        // In case of collision, it is better to stop all commands (and wait for the rectified course of actions)
-                        return;
-                    }
-                    this.coordinates = newCoordinates;
-
-                    //OUT OF PLATEAU check
-                    if (plateau.checkOutOfBounds(coordinates)) {
-                        System.out.println("Rover got out of the Plateau");
-                        instructions = "";
-                        // You can add additional logics, perhaps a flag to disable the rover or destroy it ?
-                        return;
-                    }
-                    break;
-                default:
-                    // ignore Bad commands
-            }
+    public void processCommands() {
+        for (MoveCommand command : commands) {
+            Position newPosition = command.move(coordinates, direction);
+            this.coordinates = newPosition.coordinates();
+            this.direction = newPosition.direction();
         }
-        // Clear commands when done
-        instructions = "";
-
     }
 
     public Position getCurrentPosition() {
