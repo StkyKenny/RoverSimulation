@@ -1,4 +1,4 @@
-package me.stky;
+package me.stky.models;
 
 import java.util.Objects;
 

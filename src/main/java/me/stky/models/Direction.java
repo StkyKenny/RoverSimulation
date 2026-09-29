@@ -1,4 +1,4 @@
-package me.stky;
+package me.stky.models;
 
 public enum Direction {
     NORTH,

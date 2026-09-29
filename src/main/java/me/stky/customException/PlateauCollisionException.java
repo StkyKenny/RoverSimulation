@@ -1,6 +1,6 @@
 package me.stky.customException;
 
-import me.stky.Coordinates;
+import me.stky.models.Coordinates;
 
 public class PlateauCollisionException extends Exception {
 

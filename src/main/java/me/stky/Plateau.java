@@ -1,5 +1,7 @@
 package me.stky;
 
+import me.stky.models.Coordinates;
+
 import java.util.ArrayList;
 import java.util.List;
 

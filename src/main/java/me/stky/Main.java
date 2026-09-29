@@ -1,5 +1,8 @@
 package me.stky;
 
+import me.stky.models.Coordinates;
+import me.stky.models.Direction;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

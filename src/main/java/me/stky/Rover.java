@@ -1,5 +1,9 @@
 package me.stky;
 
+import me.stky.models.Coordinates;
+import me.stky.models.Direction;
+import me.stky.models.Position;
+
 import java.util.Objects;
 
 public class Rover {
@@ -72,6 +76,6 @@ public class Rover {
     }
 
     public Position getCurrentPosition() {
-        return new Position(coordinates,direction);
+        return new Position(coordinates, direction);
     }
 }

@@ -1,4 +1,4 @@
-package me.stky;
+package me.stky.models;
 
 public record Position(Coordinates coordinates, Direction direction) {
 
