@@ -1,8 +1,11 @@
 package me.stky;
 
+import me.stky.customException.OutOfBoundPlateauException;
+import me.stky.customException.PlateauCollisionException;
 import me.stky.entities.Rover;
 import me.stky.models.Coordinates;
 import me.stky.models.Direction;
+import me.stky.validator.CoordinatesValidatorImpl;
 import me.stky.validator.InstructionsValidatorImpl;
 
 import java.io.IOException;
@@ -49,7 +52,8 @@ public class Main {
                         new Coordinates(Integer.parseInt(roverDefinition[0]), Integer.parseInt(roverDefinition[1])),
                         direction,
                         lines.get(currentLineIdx).trim().toUpperCase(),
-                        new InstructionsValidatorImpl()
+                        new InstructionsValidatorImpl(),
+                        new CoordinatesValidatorImpl(plateau)
                 );
                 rovers.add(rover);
 
@@ -68,7 +72,13 @@ public class Main {
 
         // RUN PHASE
         for (Rover rover : rovers) {
-            rover.processCommands();
+            try {
+                rover.processCommands();
+            } catch (OutOfBoundPlateauException e) {
+                System.out.println(e.getMessage());
+            } catch (PlateauCollisionException e) {
+                System.out.println(e.getMessage());
+            }
             System.out.println(rover.getCurrentPosition());
 
         }

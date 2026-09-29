@@ -12,6 +12,6 @@ public class PlateauCollisionException extends Exception {
 
     @Override
     public String getMessage() {
-        return "The coordinate at coordinates :[ " + this.coordinates.x() + " " + this.coordinates.y() + " ]";
+        return this.getClass().getName() + " - The position at coordinates :[ " + this.coordinates.x() + " " + this.coordinates.y() + " ]";
     }
 }
