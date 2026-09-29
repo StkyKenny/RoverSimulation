@@ -1,5 +1,6 @@
 package me.stky;
 
+import me.stky.entities.Rover;
 import me.stky.models.Coordinates;
 import me.stky.models.Direction;
 import me.stky.validator.InstructionsValidatorImpl;

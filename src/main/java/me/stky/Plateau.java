@@ -1,5 +1,7 @@
 package me.stky;
 
+import me.stky.entities.Obstacle;
+import me.stky.entities.Rover;
 import me.stky.models.Coordinates;
 
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ public class Plateau {
 
     private final int width;
     private final int height;
-    private final List<Rover> obstacles;
+    private final List<Obstacle> obstacles;
 
     public Plateau(int width, int height) {
         if (width < 0 || height < 0) {
@@ -37,12 +39,24 @@ public class Plateau {
      * Check if the newcoordinate with collide with an already present obstacle at the coordinate indicated
      */
     public boolean hasCollision(Coordinates newcoordinate) {
-        for (Rover obstacle : obstacles) {
+        for (Obstacle obstacle : obstacles) {
             if (obstacle.getCoordinates().equals(newcoordinate)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public List<Obstacle> getObstacles() {
+        return obstacles;
     }
 
     /**

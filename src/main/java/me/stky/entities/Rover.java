@@ -1,4 +1,4 @@
-package me.stky;
+package me.stky.entities;
 
 import me.stky.commands.MoveCommand;
 import me.stky.models.Coordinates;
@@ -9,27 +9,20 @@ import me.stky.validator.InstructionsValidatorImpl;
 import java.util.List;
 import java.util.Objects;
 
-public class Rover {
+public class Rover extends Obstacle {
     private Coordinates coordinates;
     private Direction direction;
     private String instructions;
     private List<MoveCommand> commands;
 
-    public Rover(Coordinates coordinates, Direction direction, String instructions, InstructionsValidatorImpl instructionsValidator) {
+    public Rover(Coordinates coordinates, Direction direction, String instructions,
+                 InstructionsValidatorImpl instructionsValidator) {
         Objects.requireNonNull(direction, "The rover requires a valid initial direction");
 
         this.coordinates = coordinates;
         this.direction = direction;
         this.instructions = instructions;
         this.commands = instructionsValidator.validateInstructions(instructions);
-    }
-
-    public void updateDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
     }
 
     public void processCommands() {
