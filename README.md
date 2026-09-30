@@ -18,16 +18,31 @@
 - Collision with other Rovers are detected in which case they will stop all commands
 - Unrecognized rover instructions are ignored
 - In case of blocking error (making it unable to proceed), the program will stop
-- No advanced logging setup, so error message do not contains technical details
 - Collision check when 2 rovers run into each other, the rover will then stop at its position
-
-
-- Too few commands for the command pattern
 
 ## Input file
 
-~Not described here~
+First line describe the plateau height and width
+For each 2 next lines
+-The rover is described by it's coordinates and facing direction following this format : `x y direction`
+-Then its set of instructions that are either `L` `M` or `R`
+Exemple :
+
+```
+5 5
+1 2 N
+LMLMLMLMM
+3 3 E
+MMRMMRMRRM
+```
+
+## Output
+
+The position of each rover following this format : `x y direction`
+Exemple :
+```1 2 N```
+For rover at x:1, y:2 and facing north
 
 ## Others
 
-This was made in IntelliJ with Java 25 using SDK : Eclipse Temurin 25.0.2
+This was made in IntelliJ with Java 25 using SDK : Microsoft OpenJDK Temurin 25.0.4
