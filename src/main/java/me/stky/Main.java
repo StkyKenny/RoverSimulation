@@ -84,10 +84,16 @@ public class Main {
             }
             currentLineIdx += 1;
             Direction direction = Direction.getDirection(roverDefinition[2]);
+            String instructions;
+            try {
+                instructions = lines.get(currentLineIdx).trim().toUpperCase();
+            } catch (IndexOutOfBoundsException e) {
+                instructions = "";
+            }
             Rover rover = new Rover(
                     new Coordinates(Integer.parseInt(roverDefinition[0]), Integer.parseInt(roverDefinition[1])),
                     direction,
-                    lines.get(currentLineIdx).trim().toUpperCase(),
+                    instructions,
                     new InstructionsValidatorImpl(),
                     new CoordinatesValidatorImpl(plateau),
                     List.of(plateau)

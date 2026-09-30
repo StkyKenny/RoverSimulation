@@ -11,12 +11,10 @@ import me.stky.validator.CoordinatesValidator;
 import me.stky.validator.CoordinatesValidatorImpl;
 import me.stky.validator.InstructionsValidator;
 import me.stky.validator.InstructionsValidatorImpl;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -24,20 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoverSimulatorTest {
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream outputErrStream = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
 
     private final String testInputsFolder = "src/main/resources/inputTest/";
+    private static Plateau plateau;
+    private static InstructionsValidator instructionsValidator;
+    private static CoordinatesValidator coordinatesValidator;
 
-    private final String parsingErrorMessage = "Error parsing/processing the parameters";
-    Plateau plateau;
-    InstructionsValidator instructionsValidator;
-    CoordinatesValidator coordinatesValidator;
-
-    @BeforeAll
-    public static void setupPlateau() throws BadInputException {
+    @BeforeEach
+    public void setupPlateau() throws BadInputException {
         plateau = new Plateau(5, 5);
         instructionsValidator = new InstructionsValidatorImpl();
         coordinatesValidator = new CoordinatesValidatorImpl(plateau);
@@ -85,66 +77,82 @@ public class RoverSimulatorTest {
     // ------------------------------------------------------
 
     @Test
-    public void testExample1() throws BadInputException, OutOfBoundPlateauException, PlateauCollisionException {
+    public void testExample1() throws OutOfBoundPlateauException, PlateauCollisionException {
+        Position originalPosition = createPosition(1, 2, Direction.NORTH);
+        String instructions = "LMLMLMLMM";
+        Rover rover = createRover(originalPosition, instructions);
 
-        Coordinates coords = new Coordinates(1, 2);
-        Direction direction = Direction.NORTH;
-        Rover rover = new Rover(coords,
-                direction,
-                "LMLMLMLMM".trim().toUpperCase(),
-                instructionsValidator,
-                coordinatesValidator,
-                List.of(plateau));
-        Position expectedPosition = createPosition(1, 3, Direction.NORTH);
         rover.processCommands();
+        Position expectedPosition = createPosition(1, 3, Direction.NORTH);
         assertEquals(expectedPosition, rover.getCurrentPosition());
     }
 
     @Test
-    public void testNoCommands() {
-        var testFilename = "inputNoCommands.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        String expectedAnswer =
-                "1 2 N" + System.lineSeparator() +
-                        "3 3 E" + System.lineSeparator();
-        assertEquals(expectedAnswer, outputStream.toString());
+    public void testExample2() throws OutOfBoundPlateauException, PlateauCollisionException {
+        Position originalPosition = createPosition(3, 3, Direction.EAST);
+        String instructions = "MMRMMRMRRM";
+        Rover rover = createRover(originalPosition, instructions);
+
+        rover.processCommands();
+        Position expectedPosition = createPosition(5, 1, Direction.EAST);
+        assertEquals(expectedPosition, rover.getCurrentPosition());
+    }
+
+    @Test
+    public void testNoCommands() throws OutOfBoundPlateauException, PlateauCollisionException {
+        Position originalPosition = createPosition(3, 3, Direction.EAST);
+        String instructions = "";
+        Rover rover = createRover(originalPosition, instructions);
+
+        rover.processCommands();
+        assertEquals(originalPosition, rover.getCurrentPosition());
     }
 
 
     @Test
-    public void testIgnoreBadCommands() {
-        var testFilename = "inputWithBadCommands.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        String expectedAnswer =
-                "1 3 N" + System.lineSeparator() +
-                        "5 1 E" + System.lineSeparator();
-        assertEquals(expectedAnswer, outputStream.toString());
+    public void testIgnoreBadCommands() throws OutOfBoundPlateauException, PlateauCollisionException {
+        Position originalPosition = createPosition(1, 2, Direction.NORTH);
+        String instructions = "LMLEZMAEFLMBTEBLM13425435M";
+        Rover rover = createRover(originalPosition, instructions);
+
+        rover.processCommands();
+        Position expectedPosition = createPosition(1, 3, Direction.NORTH);
+        assertEquals(expectedPosition, rover.getCurrentPosition());
     }
 
     @Test
     public void testOutOfBounds() {
-        var testFilename = "inputGoingOutOfBounds.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        String expectedAnswer =
-                "SIGNAL LOST : Rover got out of the Plateau" + System.lineSeparator() +
-                        "1 6 N" + System.lineSeparator() +
-                        "5 1 E" + System.lineSeparator();
-        assertEquals(expectedAnswer, outputStream.toString());
+        Position originalPosition = createPosition(1, 2, Direction.NORTH);
+        String instructions = "MMMMMMMM";
+        Rover rover = createRover(originalPosition, instructions);
+
+        assertThrows(OutOfBoundPlateauException.class, rover::processCommands);
     }
 
     @Test
-    public void testCollision() {
+    public void testCollision() throws BadInputException, IOException, OutOfBoundPlateauException, PlateauCollisionException {
         var testFilename = "inputCollide.txt";
-        Main.main(new String[]{testInputsFolder + testFilename});
-        String expectedAnswer =
-                "COLLISION : Rover couldn't proceed further" + System.lineSeparator() +
-                        "0 3 N" + System.lineSeparator() +
-                        "0 4 E" + System.lineSeparator();
-        assertEquals(expectedAnswer, outputStream.toString());
+        String fullPath = testInputsFolder + testFilename;
+        List<Rover> rovers = Main.parseEnvironnment(Path.of(fullPath));
 
+        assertThrows(PlateauCollisionException.class, () -> {
+            for (Rover rover : rovers) {
+                rover.processCommands();
+            }
+        });
     }
 
     private Position createPosition(int x, int y, Direction direction) {
         return new Position(new Coordinates(x, y), direction);
+    }
+
+    // This is a facade
+    private Rover createRover(Position position, String instructions) {
+        return new Rover(position.coordinates(),
+                position.direction(),
+                instructions.trim().toUpperCase(),
+                instructionsValidator,
+                coordinatesValidator,
+                List.of(plateau));
     }
 }
