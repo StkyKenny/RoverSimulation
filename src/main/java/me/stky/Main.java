@@ -27,7 +27,7 @@ public class Main {
         List<Rover> rovers;
         // SETUP PHASE
         try {
-            rovers = parseEnvironnment(inputText);
+            rovers = parseEnvironment(inputText);
 
         } catch (OutOfBoundPlateauException e) {
             System.err.println("Entity found out of bounds : " + e.getMessage());
@@ -61,7 +61,7 @@ public class Main {
 
     }
 
-    public static List<Rover> parseEnvironnment(Path input) throws OutOfBoundPlateauException, PlateauCollisionException, IOException, BadInputException {
+    public static List<Rover> parseEnvironment(Path input) throws OutOfBoundPlateauException, PlateauCollisionException, IOException, BadInputException {
         List<String> lines = Files.readAllLines(input);
         Plateau plateau;
         List<Rover> rovers = new ArrayList<>();

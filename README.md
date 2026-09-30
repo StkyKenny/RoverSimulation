@@ -22,10 +22,10 @@
 
 ## Input file
 
-First line describe the plateau height and width
-For each 2 next lines
--The rover is described by it's coordinates and facing direction following this format : `x y direction`
--Then its set of instructions that are either `L` `M` or `R`
+First line describe the plateau height and width  
+For each 2 next lines  
+-The rover is described by it's coordinates and facing direction following this format : `x y direction`  
+-Then its set of instructions that are either `L` `M` or `R`  
 Exemple :
 
 ```
@@ -45,4 +45,4 @@ For rover at x:1, y:2 and facing north
 
 ## Others
 
-This was made in IntelliJ with Java 25 using SDK : Microsoft OpenJDK Temurin 25.0.4
+This was made in IntelliJ with Java 25 using SDK : Microsoft OpenJDK 25.0.4

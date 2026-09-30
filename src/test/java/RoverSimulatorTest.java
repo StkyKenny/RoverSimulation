@@ -37,41 +37,41 @@ public class RoverSimulatorTest {
 
     @Test
     public void testNoInputFile() {
-        assertThrows(IOException.class, () -> Main.parseEnvironnment(Path.of("")));
+        assertThrows(IOException.class, () -> Main.parseEnvironment(Path.of("")));
     }
 
     @Test
     public void testInvalidFilePath() {
         var testFilename = "non_existent.txt";
-        assertThrows(IOException.class, () -> Main.parseEnvironnment(Path.of(testFilename)));
+        assertThrows(IOException.class, () -> Main.parseEnvironment(Path.of(testFilename)));
     }
 
     @Test
     public void testNegativePlateau() {
         var testFilename = "inputNegativePlateau.txt";
         String fullPath = testInputsFolder + testFilename;
-        assertThrows(BadInputException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
+        assertThrows(BadInputException.class, () -> Main.parseEnvironment(Path.of(fullPath)));
     }
 
     @Test
     public void testBadInputPlateau() {
         var testFilename = "inputNaNPlateau.txt";
         String fullPath = testInputsFolder + testFilename;
-        assertThrows(NumberFormatException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
+        assertThrows(NumberFormatException.class, () -> Main.parseEnvironment(Path.of(fullPath)));
     }
 
     @Test
     public void testSetupRoverOutsideNegative() {
         var testFilename = "inputSetupRoverNegative.txt";
         String fullPath = testInputsFolder + testFilename;
-        assertThrows(OutOfBoundPlateauException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
+        assertThrows(OutOfBoundPlateauException.class, () -> Main.parseEnvironment(Path.of(fullPath)));
     }
 
     @Test
     public void testSetupRoverOutsideOver() {
         var testFilename = "inputSetupRoverOutsideOver.txt";
         String fullPath = testInputsFolder + testFilename;
-        assertThrows(OutOfBoundPlateauException.class, () -> Main.parseEnvironnment(Path.of(fullPath)));
+        assertThrows(OutOfBoundPlateauException.class, () -> Main.parseEnvironment(Path.of(fullPath)));
     }
 
     // ------------------------------------------------------
@@ -133,7 +133,7 @@ public class RoverSimulatorTest {
     public void testCollision() throws BadInputException, IOException, OutOfBoundPlateauException, PlateauCollisionException {
         var testFilename = "inputCollide.txt";
         String fullPath = testInputsFolder + testFilename;
-        List<Rover> rovers = Main.parseEnvironnment(Path.of(fullPath));
+        List<Rover> rovers = Main.parseEnvironment(Path.of(fullPath));
 
         assertThrows(PlateauCollisionException.class, () -> {
             for (Rover rover : rovers) {
