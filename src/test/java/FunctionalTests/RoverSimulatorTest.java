@@ -1,3 +1,5 @@
+package FunctionalTests;
+
 import me.stky.Main;
 import me.stky.Plateau;
 import me.stky.customException.BadInputException;
@@ -34,6 +36,7 @@ public class RoverSimulatorTest {
         instructionsValidator = new InstructionsValidatorImpl();
         coordinatesValidator = new CoordinatesValidatorImpl(plateau);
     }
+
 
     @Test
     public void testNoInputFile() {
@@ -119,6 +122,7 @@ public class RoverSimulatorTest {
         Position expectedPosition = createPosition(1, 3, Direction.NORTH);
         assertEquals(expectedPosition, rover.getCurrentPosition());
     }
+
 
     @Test
     public void testOutOfBounds() {
