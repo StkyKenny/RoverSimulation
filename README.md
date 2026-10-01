@@ -38,9 +38,9 @@ MMRMMRMRRM
 
 ## Output
 
-The position of each rover following this format : `x y direction`
-Exemple :
-```1 2 N```
+The position of each rover following this format : `x y direction`  
+Exemple :  
+```1 2 N```  
 For rover at x:1, y:2 and facing north
 
 ## Others
